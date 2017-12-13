@@ -176,12 +176,16 @@ class AttachmentsController extends Controller
 
                 // Create UploadFile Instance
                 $attach = $model->uploadFile($attachName,$attachType,$attachPath,$attachField);
-                $model->filename = $attach->name;
+		if($attach){
+			$model->filename = $attach->name;
+		}else{
+			$model->filename = $model->oldAttributes['filename'];
+		}
 				
-				if($model->save())
-				{
-					return $this->redirect(['index']);
-				}
+		if($model->save())
+		{
+			return $this->redirect(['index']);
+		}
             } else {
                 return $this->render('update', [
                     'model' => $model,
